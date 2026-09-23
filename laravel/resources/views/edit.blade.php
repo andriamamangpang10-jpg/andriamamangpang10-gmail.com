@@ -1,14 +1,34 @@
-@extends('layouts.app')
-@section('content')
-  <form action="{{ route('tasks.update',$task) }}" method="POST">
-    @csrf @method('PUT')
-    <input name="task_name" value="{{ $task->task_name }}" required>
-    <textarea name="description">{{ $task->description }}</textarea>
-    <select name="status">
-      <option @selected($task->status==='Pending')>Pending</option>
-      <option @selected($task->status==='Completed')>Completed</option>
-    </select>
-    <input type="date" name="due_date" value="{{ $task->due_date?->format('Y-m-d') }}">
-    <button type="submit">Update Task</button>
-  </form>
-@endsection
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Task</title>
+</head>
+<body>
+
+    <h1>Edit Task</h1>
+
+    <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+
+        <label>Task Name:</label><br>
+        <input type="text" name="task_name" value="{{ $task->task_name }}"><br><br>
+
+        <label>Description:</label><br>
+        <textarea name="description">{{ $task->description }}</textarea><br><br>
+
+        <label>Status:</label><br>
+        <select name="status">
+            <option value="Pending" {{ $task->status == 'Pending' ? 'selected' : '' }}>Pending</option>
+            <option value="Completed" {{ $task->status == 'Completed' ? 'selected' : '' }}>Completed</option>
+        </select><br><br>
+
+        <label>Due Date:</label><br>
+        <input type="date" name="due_date" value="{{ $task->due_date }}"><br><br>
+
+        <button type="submit">Update Task</button>
+        <a href="{{ route('tasks.index') }}">Cancel</a>
+    </form>
+
+</body>
+</html>
